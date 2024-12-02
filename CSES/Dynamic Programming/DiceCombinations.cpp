@@ -70,11 +70,11 @@ inline int pMod(int i, int n) {
     return (i % n + n) % n;
 }
 
+int dp[1000001];
 int countDiceCombination(int sum) {
-    int* dp = new int[sum+1];
     dp[0] = dp[1] = 1;
     for(int i = 2; i <= sum; i++)
-        dp[i] = pMod((((dp[i-1]*2)%MOD) - (i > 6 ? dp[i-7]%MOD : 0)), MOD);
+        dp[i] = pMod(( ((dp[i-1]*2)%MOD) - ((i > 6)*dp[i-7])%MOD ), MOD);
 
     return dp[sum];
 }
