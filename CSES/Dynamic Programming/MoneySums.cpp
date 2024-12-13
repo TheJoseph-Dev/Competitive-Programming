@@ -4,7 +4,7 @@ bool dp[2][100001];
 void moneySums(int n, int coins[101]) {
     int sum = 0;
     for(int i = 0; i < n; i++) sum += coins[i];
-    for(int i = 1; i <= sum; i++) dp[0][sum] = 0;
+    for(int i = 1; i <= sum; i++) dp[0][i] = 0;
     dp[0][0] = 1;
 
     bool si = 1;
