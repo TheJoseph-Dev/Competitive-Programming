@@ -1,108 +1,78 @@
 #include <stdio.h>
-#include <vector>
-#include <bitset>
-#include <unordered_set>
 
-#define MOD 1000000007LL
-
-/*
-    Get Prime Factors from each Q
-    Precalculate vectors with plates of each prime factors
-    Because there are little prime factors to the given range (10^6)
-    We can put the plates in a set and use its size
-*/
+// Mobius Function solution
+// The Mobius function is a multiplicative function that comes in handy when dealing with inclusion-exclusion
+// technique and divisors-related problems | https://usaco.guide/plat/PIE?lang=cpp
+// Leo's Solution: Pure Inclusion-Exclusion principle given the fact that 2^p is small enough for this problem
+// (2*3*5*7*11*13*17*19 > 10^6 => worst case = 7 different primes)
+// Video for Leo's solution: https://www.youtube.com/watch?v=8P0YgkBSl7w
 
 #define ll long long
+constexpr int maxN = 1e6+1, MOD = 1e9+7;
 
-ll modpow2(int p) { 
-    int r = 1;     // Initialize result 
-    int b = 2;
-    while (p > 0) { 
-        // If y is odd, multiply x with result 
-        if (p & 1) 
-            r = (r*b) % MOD; 
- 
-        // y must be even now 
-        p >>= 1; 
-        b = (b*b) % MOD; 
-    } 
-    return r; 
+int divCount[maxN] = {0};
+void countDivisors(int plates[maxN], int n) {
+    for(int i = 0; i < n; i++)
+        for(int d = 1; d*d <= plates[i]; d++)
+            if(plates[i]%d == 0) { divCount[d]++; if(plates[i] != d*d) divCount[plates[i]/d]++; }
 }
 
-void primeFactors(int n, std::unordered_set<int>& primes) {
-
-    // Print the number of 2s that divide n 
-    while (!(n&1)) { 
-        primes.insert(2);
-        n >>= 1;
+short mobius[maxN] = {0};
+void genMobius() {
+    mobius[1] = -1;
+    for (int i = 1; i < maxN; i++) {
+        if (mobius[i] == 0) continue;
+        mobius[i] *= -1;
+        for (int j = (i<<1); j < maxN; j += i)
+            mobius[j] += mobius[i];
     }
- 
-    // n must be odd at this point. So we can skip 
-    // one element (Note i = i +2) 
-    for (int i = 3; i*i <= n; i+=2) { 
-        // While i divides n, print i and divide n 
-        while (n % i == 0) { 
-            primes.insert(i); 
-            n/=i;
-        }
-    } 
- 
-    // This condition is to handle the case when n 
-    // is a prime number greater than 2 
-    if (n > 2) primes.insert(n);
+}
+
+int binpow(ll b, int e) {
+    ll r = 1;
+    while(e) {
+        if(e&1) r = (r*b)%MOD;
+        b = (b*b)%MOD;
+        e >>= 1; 
+    }
+
+    return r%MOD;
 }
 
 int main() {
 
-    int n, plates[100001];
+    genMobius();
+    
+    int n, plates[maxN];
     scanf("%d", &n);
 
     for(int i = 0; i < n; i++)
         scanf("%d", plates+i);
 
-    int q, people[100001];
+    countDivisors(plates, n);
+
+    int q;
     scanf("%d", &q);
 
-    for(int i = 0; i < q; i++)
-        scanf("%d", people+i);
+    // Count how many plates there are which don't contain any of the person's prime factors
+    // 1 2 3 4 5 6
+    // count[i] = {0, 6, 3, 2, 1, 1, 1, 0}
+    // count[2] + count[3] => 5 Overcount (6)
+    // Therefore, we use the mobius function to apply the inclusion-exclusion principle
+    // sum(count[d]*mobius(d)) => 4
 
-    std::vector<int> primes = std::vector<int>();
-    std::unordered_set<int> ingredients = std::unordered_set<int>();
-    // Get ingredients in N sqrt(N);
-    for(int i = 0; i < n; i++)
-        primeFactors(plates[i], ingredients);
-    
-    // primes.size() is ~79000 at max 
-    // 41538 primes with intersection
-    for(int i : ingredients)
-        primes.push_back(i);
-
-    // Precalculate for each ingredient (prime) its plates
-    // Worst Case: Many Prime Numbers => O(n^2)
-    
-    /*
-    std::vector<std::bitset<100001>> fMap = std::vector<std::bitset<100001>>(primes.size());
-    for(int i = 0; i < primes.size(); i++)
-        for(int p = 0; p < n; p++)
-            if(plates[p]%primes[i] == 0)
-                fMap[i].flip(p);
-    */
-
-    std::vector<int> fMap[1000001];
-    for(int i = 0; i < primes.size(); i++)
-        for(int p = 0; p < n; p++)
-            if(plates[p]%primes[i] == 0)
-                fMap[primes[i]].push_back(plates[p]);
-
-    // q sqrt(Xn);
-    for(int x = 0; x < q; x++) {
-        std::unordered_set<int> badIngs = std::unordered_set<int>(), badPlates = std::unordered_set<int>();
-        primeFactors(people[x], badIngs);
-        for(int i : badIngs) {
-            for(int p : fMap[i]) badPlates.insert(p);
-        }
-
-        printf("%lli\n", modpow2(n-badPlates.size()));
+    int person;
+    while(q--) {
+        scanf("%d", &person);
+        
+        int count = 0;
+        for(int i = 1; i*i <= person; i++) {
+            if(person%i != 0) continue;
+            count += divCount[i]*mobius[i];
+            if(i*i != person) count += divCount[person/i]*mobius[person/i];
+        } 
+        
+        printf("%d\n", binpow(2, count));
     }
 
     return 0;
