@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>beecrowd 3487 - Em Busca da Casa Automática</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="author" content="beecrowd; www.beecrowd.edu.br" />
+		<meta name="description" content="beecrowd - Problema 3487 - Em Busca da Casa Automática" />
+
+		<link href="https://fonts.googleapis.com/css?family=Ubuntu:400,700" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="https://resources.beecrowd.com.br/repository/contest.css" />
+		
+	</head>
+	<body>
+		<div class="header">
+			<span>beecrowd | 3487</span>
+			<h1>Em Busca da Casa Automática</h1>
+			<div>
+				<p>Por José Vitor V. Martos, UNOESTE <img src='https://resources.beecrowd.com.br/gallery/images/flags/br.gif' alt='BR' /> Brazil</p>
+			</div>
+			<strong>Timelimit: 1</strong>
+		</div>
+
+		<div class="problem">
+
+			<div class="description">
+				<p>Minecraft é um jogo sandbox baseado em voxels no qual o jogador pode interagir com o mundo de diversas formas.</p>
+
+<p>Viniccius13 é um dos melhores jogadores da história do jogo. Após muitas farms e aventuras, ele decidiu que chegou o momento de efetivar sua quest final: A Casa Automática!</p>
+
+<p>Para isso, Viniccius13 escolheu 5 tipos distintos de blocos que constituirão a casa. Ele já tem uma ideia de como ela ficará e selecionou um espaço para construí-la (nenhum deserto ou montanha foi planificado no processo).</p>
+
+<p>Embora Viniccius13 seja um excelente jogador, ele ainda encontra dificuldades nas decorações. Por isso, pode ser necessário realizar alterações nos blocos em qualquer coordenada (x, y, z). Com o foco em começar a construir, Viniccius13 deseja saber quantos blocos serão utilizados em cada parte da casa, a fim de se preparar e juntar todos os recursos necessários para completar sua missão.</p>
+
+<p>&nbsp;</p>
+			</div>
+			<h2>Entrada</h2>
+
+			<div class="input">
+				<p>A entrada consiste em um único caso de teste. A primeira linha contém um inteiro <strong>N</strong> (1 ≤ <strong>N</strong> ≤ 10<sup>5</sup>), representando o número de operações. As próximas <strong>N</strong> linhas contêm as operações, as quais podem assumir uma das seguintes formas:</p>
+
+<p>&nbsp;&nbsp;&nbsp; 1 X Y Z B: "Posiciona na posição (<strong>x</strong>, <strong>y</strong>, <strong>z</strong>) um bloco do tipo <strong>B</strong>" (1 ≤ <strong>x</strong>, <strong>y</strong>, <strong>z</strong> ≤ 100, 1 ≤ <strong>B</strong> ≤ 5)</p>
+<p>&nbsp;&nbsp;&nbsp; 2 X Y Z U V W: "Quantos blocos de cada tipo são necessários para construir no espaço cuboidal definido por (<strong>x</strong>, <strong>y</strong>, <strong>z</strong>) até (<strong>u</strong>, <strong>v</strong>, <strong>w</strong>)" (1 ≤ <strong>x</strong>, <strong>y</strong>, <strong>z</strong>, <strong>u</strong>, <strong>v</strong>, <strong>w</strong> ≤ 100, <strong>x</strong> ≤ <strong>u</strong>, <strong>y</strong> ≤ <strong>v</strong>, <strong>z</strong> ≤ <strong>w</strong>)</p>
+
+<p>Considere que, no início, nenhum bloco está posicionado.</p>
+			</div>
+
+			<h2>Saída</h2>
+
+			<div class="output">
+				<p>Para cada operação do tipo <strong>2</strong>, imprima 5 inteiros representando a quantidade de blocos dos tipos 1, 2, 3, 4 e 5, nessa ordem, contidos dentro do volume definido.</p>
+			</div>
+
+			<div class="both"></div>
+
+			<table>
+				<thead>
+					<tr>
+						<td>Exemplos de Entrada</td>
+						<td>Exemplos de Saída</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="division">
+							<p>7<br />
+1 1 2 1 3<br />
+1 1 2 2 4<br />
+1 2 2 1 4<br />
+1 2 2 2 3<br />
+2 1 2 2 2 2 2<br />
+1 2 2 2 4<br />
+2 1 2 2 2 2 2</p>
+
+						</td>
+						<td>
+							<p>0 0 1 1 0<br />
+0 0 0 2 0</p>
+
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		<div class="both"></div>
+
+    <table>
+        <thead>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="division">
+                    <p>8<br />
+1 1 1 2 1<br />
+1 1 1 3 2<br />
+1 1 1 4 3<br />
+1 1 1 5 4<br />
+2 1 1 1 1 1 6<br />
+1 1 1 6 5<br />
+2 1 1 1 1 1 6<br />
+2 1 1 1 1 1 2</p>
+
+                </td>
+                <td>
+                    <p>1 1 1 1 0<br />
+1 1 1 1 1<br />
+1 0 0 0 0</p>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="both"></div>
+
+    <table>
+        <thead>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="division">
+                    <p>16<br />
+1 1 1 1 5<br />
+1 1 1 3 5<br />
+1 2 1 1 5<br />
+1 3 1 1 5<br />
+1 3 1 2 5<br />
+1 3 1 3 5<br />
+1 2 1 3 5<br />
+1 1 2 1 4<br />
+1 1 2 3 4<br />
+1 2 2 1 4<br />
+1 3 2 1 4<br />
+1 3 2 2 4<br />
+1 3 2 3 4<br />
+1 2 2 3 4<br />
+2 1 1 1 3 3 3<br />
+2 1 1 1 2 1 3</p>
+
+<p>&nbsp;</p>
+
+                </td>
+                <td>
+                    <p>0 0 0 7 7<br />
+0 0 0 0 4</p>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+			<p class="footer">
+				
+			</p>
+		</div>
+	</body>
+</html>
