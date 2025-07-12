@@ -8,3 +8,4 @@ input.txt
 contest.cpp
 Solver.cpp
 *.s
+*.h
