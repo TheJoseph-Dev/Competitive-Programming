@@ -3,10 +3,10 @@
 .cph/
 .vscode/
 Tried/
-input.txt
 *.zip
-contest.cpp
-Solver.cpp
 *.s
 *.h
+!Debug.h
 CP & Beecrowd/
+/*.txt
+/*.cpp
